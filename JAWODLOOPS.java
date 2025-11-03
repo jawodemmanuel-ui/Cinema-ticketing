@@ -1,103 +1,72 @@
 import java.util.Scanner;
 
-public class TicketSystem {
+public class CinemaTicketSystem {
     public static void main(String[] args) {
-        final double BASE_PRICE = 200.0;
         Scanner sc = new Scanner(System.in);
+        double basePrice = 200.0;
+
+        System.out.println("=======================================");
+        System.out.println("         CINEMA TICKETING SYSTEM");
+        System.out.println("=======================================");
+        System.out.println("Submitted by: JAWOD");
+        System.out.println("Course & Section: BSIT 1B");
+        System.out.println("=======================================\n");
 
         while (true) {
-            System.out.print("\nEnter customer age (or type 'exit' to quit): ");
-            String ageInput = sc.nextLine();
-
-            if (ageInput.equalsIgnoreCase("exit")) {
-                System.out.println("Program ended.");
+            System.out.print("Enter age of customer (or type 'exit' to quit): ");
+            String input = sc.nextLine();
+            if (input.equalsIgnoreCase("exit")) {
+                System.out.println("\nThank you for using the Cinema Ticketing System!");
+                System.out.println("=======================================");
                 break;
             }
 
-            int age;
-            try {
-                age = Integer.parseInt(ageInput);
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter a valid age.");
-                continue;
-            }
+            int age = Integer.parseInt(input);
 
-            System.out.print("Enter the day of the week: ");
-            String day = sc.nextLine().trim();
-            day = day.substring(0,1).toUpperCase() + day.substring(1).toLowerCase();
+            System.out.print("Enter day of the week: ");
+            String day = sc.nextLine();
 
             System.out.print("Enter number of tickets: ");
-            int numTickets;
-            try {
-                numTickets = Integer.parseInt(sc.nextLine());
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter a number for tickets.");
-                continue;
-            }
+            int tickets = Integer.parseInt(sc.nextLine());
 
-            double pricePerTicket;
-            String discountType = "";
+            double pricePerTicket = basePrice;
+            String discountApplied = "None";
 
-          
             if (age < 7) {
                 pricePerTicket = 0;
-                discountType = "Child below 7 (Free ticket)";
+                discountApplied = "Free (Under 7 years old)";
+            } else if (day.equalsIgnoreCase("Wednesday")) {
+                pricePerTicket = basePrice * 0.5;
+                discountApplied = "50% Wednesday Discount";
             } else if (age >= 60) {
-                double seniorPrice = BASE_PRICE * 0.8;  
-                if (day.equals("Wednesday")) {
-                    double wedPrice = BASE_PRICE * 0.5; 
-                    
-                    if (wedPrice < seniorPrice) {
-                        pricePerTicket = wedPrice;
-                        discountType = "Wednesday 50% discount";
-                    } else {
-                        pricePerTicket = seniorPrice;
-                        discountType = "Senior 20% discount";
-                    }
-                } else {
-                    pricePerTicket = seniorPrice;
-                    discountType = "Senior 20% discount";
-                }
-            } else if (day.equals("Wednesday")) {
-                pricePerTicket = BASE_PRICE * 0.5;
-                discountType = "Wednesday 50% discount";
-            } else {
-                pricePerTicket = BASE_PRICE;
-                discountType = "No discount";
+                pricePerTicket = basePrice * 0.8;
+                discountApplied = "20% Senior Discount";
             }
 
-            double totalPrice = pricePerTicket * numTickets;
+            double total = pricePerTicket * tickets;
+            double extraDiscount = 0;
 
-            
-            if (totalPrice > 1000) {
-                totalPrice *= 0.9;
-                discountType += " + Extra 10% discount (total > 1000)";
+            if (total > 1000) {
+                extraDiscount = total * 0.10;
+                total -= extraDiscount;
             }
 
-           
-            System.out.println("\n--- Ticket Summary ---");
-            System.out.printf("Tickets: %d x $%.2f\n", numTickets, pricePerTicket);
-            System.out.println("Discount applied: " + discountType);
-
-            if (totalPrice < 200) {
-                System.out.println("Final Amount: $0.00 (Minimum purchase not reached)");
-                System.out.println("Message: Minimum purchase not reached");
-            } else {
-                System.out.printf("Final Amount to Pay: $%.2f\n", totalPrice);
+            if (total < 200) {
+                System.out.println("\nMinimum purchase not reached.");
             }
-            System.out.println("----------------------");
+
+            System.out.println("\n---------------------------------------");
+            System.out.println("              TICKET SUMMARY");
+            System.out.println("---------------------------------------");
+            System.out.println("Tickets: " + tickets + " x ₱" + String.format("%.2f", pricePerTicket));
+            System.out.println("Discount Applied: " + discountApplied);
+            if (extraDiscount > 0) {
+                System.out.println("Extra 10% Discount: ₱" + String.format("%.2f", extraDiscount));
+            }
+            System.out.println("Final Amount to Pay: ₱" + String.format("%.2f", total));
+            System.out.println("---------------------------------------\n");
         }
-while (true) { 
- 
-    String ageInput = sc.nextLine();
 
-    if (ageInput.equalsIgnoreCase("exit")) {  
-        System.out.println("Program ended.");
-        break;  
-    }
-
-    
-}
         sc.close();
     }
-}
+}       
